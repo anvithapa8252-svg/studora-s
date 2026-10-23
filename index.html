@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free study notes, quizzes and tools for students everywhere.">
+<title>Studora - Your World of Learning</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f4ff;color:#252344;line-height:1.6}
+header{background:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 2px 10px #ddd}
+.logo{font-size:24px;font-weight:bold;color:#6256d9}
+nav a{margin:5px;color:#413b70;text-decoration:none;font-weight:bold}
+main{width:92%;max-width:950px;margin:24px auto}
+.hero{padding:35px 25px;border-radius:22px;background:linear-gradient(135deg,#292451,#7666e9);color:white}
+.hero h1{font-size:clamp(30px,7vw,48px);line-height:1.15;margin:12px 0}
+.hero p{color:#eeeaff}
+.btn{display:inline-block;border:0;border-radius:10px;background:#6256d9;color:white;padding:12px 17px;font-weight:bold;cursor:pointer;text-decoration:none}
+.hero .btn{background:white;color:#5144bf}
+section{margin-top:30px;scroll-margin-top:20px}
+h2{margin-bottom:5px}
+.sub{color:#6b6a82;margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.card{background:white;padding:20px;border-radius:16px;border:1px solid #e5e2f5}
+.tile{display:flex;gap:12px;align-items:center}
+.tile .emoji{font-size:28px}
+.tile h3{margin:0}
+.field{width:100%;padding:12px;margin:8px 0;border:1px solid #d8d4ee;border-radius:10px;font-size:16px;background:white}
+.note{border-bottom:1px solid #eee;padding:10px 0}
+.tag{color:#6256d9;font-size:12px;font-weight:bold;text-transform:uppercase}
+.answer{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #ddd8f1;border-radius:10px;background:white;color:#252344;cursor:pointer}
+.answer:disabled{opacity:1}
+.feedback{font-weight:bold;min-height:25px}
+.timer{font-size:48px;font-weight:bold;margin:10px 0}
+.secondary{padding:11px;border:0;border-radius:9px;background:#eae7ff;color:#4538a6;font-weight:bold;cursor:pointer}
+footer{text-align:center;color:#777;padding:30px 10px}
+@media(max-width:550px){.grid{grid-template-columns:1fr}nav a{font-size:13px}.hero{padding:26px 20px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">📚 Studora</div>
+  <nav>
+    <a href="#notes">Notes</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#tools">Timer</a>
+    <a href="#help">Homework</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero">
+    <div>🌍 YOUR WORLD OF LEARNING</div>
+    <h1>Learn anything.<br>Grow everywhere.</h1>
+    <p>A friendly learning space for curious minds. Explore notes, test your knowledge and make studying fun.</p>
+    <a class="btn" href="#notes">Start learning →</a>
+  </div>
+
+  <section>
+    <h2>Your learning space ✨</h2>
+    <p class="sub">Discover something new every day.</p>
+    <div class="grid">
+      <a class="card tile" href="#notes" style="text-decoration:none;color:inherit">
+        <span class="emoji">📖</span><div><h3>Study Notes</h3><small>Explore useful topics</small></div>
+      </a>
+      <a class="card tile" href="#quiz" style="text-decoration:none;color:inherit">
+        <span class="emoji">🧠</span><div><h3>Quick Quiz</h3><small>Test your knowledge</small></div>
+      </a>
+      <a class="card tile" href="#tools" style="text-decoration:none;color:inherit">
+        <span class="emoji">⏱️</span><div><h3>Focus Timer</h3><small>Make time to learn</small></div>
+      </a>
+      <a class="card tile" href="#help" style="text-decoration:none;color:inherit">
+        <span class="emoji">💡</span><div><h3>Homework Guide</h3><small>Learn step by step</small></div>
+      </a>
+    </div>
+  </section>
+
+  <section id="notes">
+    <h2>Study Notes 📚</h2>
+    <p class="sub">Search a topic or choose a subject.</p>
+    <div class="card">
+      <input class="field" id="search" placeholder="Search notes..." aria-label="Search notes">
+      <select class="field" id="subject" aria-label="Choose subject">
+        <option>All subjects</option>
+        <option>Science</option>
+        <option>Mathematics</option>
+        <option>English</option>
+        <option>Computing</option>
+      </select>
+      <div id="notesList"></div>
+    </div>
+  </section>
+
+  <section id="quiz">
+    <h2>Quick Quiz 🧠</h2>
+    <p class="sub">Choose your answer and check your knowledge.</p>
+    <div class="card">
+      <span class="tag" id="count"></span>
+      <h3 id="question"></h3>
+      <div id="answers"></div>
+      <p class="feedback" id="feedback" aria-live="polite"></p>
+      <button class="btn" id="next">Next question →</button>
+      <p id="score">Score: 0</p>
+    </div>
+  </section>
+
+  <section id="tools">
+    <h2>Focus Timer ⏱️</h2>
+    <p class="sub">Set a study session and focus on one task.</p>
+    <div class="card">
+      <label for="minutes">Minutes (1–120)</label>
+      <input class="field" id="minutes" type="number" min="1" max="120" value="25">
+      <div class="timer" id="clock">25:00</div>
+      <button class="btn" id="start">Start</button>
+      <button class="secondary" id="pause">Pause</button>
+      <button class="secondary" id="reset">Reset</button>
+      <p id="timerMessage">Ready when you are!</p>
+    </div>
+  </section>
+
+  <section id="help">
+    <h2>Homework Guide 💡</h2>
+    <div class="card">
+      <h3>How to solve a difficult question</h3>
+      <ol>
+        <li>Read the question carefully.</li>
+        <li>Write down what is given.</li>
+        <li>Identify what you need to find.</li>
+        <li>Choose the correct formula or idea.</li>
+        <li>Solve step by step and check your answer.</li>
+      </ol>
+      <p>Tip: Understanding why an answer works is more useful than memorising it.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>Studora 📚</strong>
+  <p>Learn at your own pace. Keep growing. 💜</p>
+</footer>
+
+<script>
+const notes=[
+{subject:"Science",title:"Photosynthesis",text:"Plants use sunlight to make food from water and carbon dioxide. Oxygen is released."},
+{subject:"Science",title:"States of Matter",text:"Solids keep their shape, liquids flow, and gases spread to fill their container."},
+{subject:"Mathematics",title:"Fractions",text:"Fractions represent parts of a whole. To add fractions, first find a common denominator."},
+{subject:"Mathematics",title:"Area of a Rectangle",text:"Area = length × width. Write your answer in square units."},
+{subject:"English",title:"Parts of Speech",text:"Nouns name people, places or things. Verbs express actions. Adjectives describe nouns."},
+{subject:"Computing",title:"Algorithms",text:"An algorithm is a sequence of clear steps used to solve a problem."}
+];
+function showNotes(){
+const term=document.getElementById("search").value.toLowerCase();
+const subject=document.getElementById("subject").value;
+const list=document.getElementById("notesList");
+list.replaceChildren();
+const found=notes.filter(n=>(subject==="All subjects"||n.subject===subject)&&(n.title+" "+n.text+" "+n.subject).toLowerCase().includes(term));
+if(!found.length){list.textContent="No matching notes yet. Try another search.";return}
+found.forEach(n=>{
+const item=document.createElement("article");item.className="note";
+const tag=document.createElement("span");tag.className="tag";tag.textContent=n.subject;
+const title=document.createElement("h3");title.textContent=n.title;
+const text=document.createElement("p");text.textContent=n.text;
+item.append(tag,title,text);list.append(item);
+});
+}
+document.getElementById("search").addEventListener("input",showNotes);
+document.getElementById("subject").addEventListener("change",showNotes);
+showNotes();
+
+const questions=[
+{q:"Which planet is called the Red Planet?",o:["Venus","Mars","Jupiter","Mercury"],a:1},
+{q:"What is 12 × 8?",o:["86","92","96","108"],a:2},
+{q:"Which is a verb in 'Birds fly high'?",o:["Birds","Fly","High","The"],a:1},
+{q:"What does HTML describe?",o:["Webpage structure","A battery","A food recipe","A planet"],a:0},
+{q:"Which plant part usually absorbs water?",o:["Flower","Leaf","Root","Fruit"],a:2}
+];
+let qi=0,points=0,answered=false;
+function showQuestion(){
+answered=false;
+const q=questions[qi];
+document.getElementById("count").textContent="Question "+(qi+1)+" of "+questions.length;
+document.getElementById("question").textContent=q.q;
+document.getElementById("feedback").textContent="";
+document.getElementById("answers").replaceChildren();
+q.o.forEach((option,i)=>{
+const b=document.createElement("button");b.className="answer";b.textContent=option;
+b.onclick=()=>{
+if(answered)return;
+answered=true;
+if(i===q.a){points++;document.getElementById("feedback").textContent="Correct! Great work 🎉";}
+else{document.getElementById("feedback").textContent="Correct answer: "+q.o[q.a];}
+document.getElementById("score").textContent="Score: "+points+" / "+(qi+1);
+[...document.getElementById("answers").children].forEach((btn,j)=>{btn.disabled=true;if(j===q.a)btn.textContent+=" ✓";});
+};
+document.getElementById("answers").append(b);
+});
+document.getElementById("next").textContent=qi===questions.length-1?"Try again ↻":"Next question →";
+}
+document.getElementById("next").onclick=()=>{
+if(qi===questions.length-1){qi=0;points=0;document.getElementById("score").textContent="Score: 0";}
+else qi++;
+showQuestion();
+};
+showQuestion();
+
+let remaining=1500,endAt=null,interval=null;
+const clock=document.getElementById("clock");
+function displayTime(){
+clock.textContent=String(Math.floor(remaining/60)).padStart(2,"0")+":"+String(remaining%60).padStart(2,"0");
+}
+function stop(){clearInterval(interval);interval=null;endAt=null;}
+function tick(){
+remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));
+displayTime();
+if(remaining===0){stop();document.getElementById("timerMessage").textContent="Session complete! Take a short break 🎉";}
+}
+document.getElementById("minutes").onchange=()=>{
+let m=Number(document.getElementById("minutes").value);
+if(!Number.isFinite(m)||m<1||m>120){m=25;document.getElementById("minutes").value=25;}
+stop();remaining=m*60;displayTime();document.getElementById("timerMessage").textContent="Timer reset.";
+};
+document.getElementById("start").onclick=()=>{
+if(interval!==null)return;
+if(remaining<=0)remaining=Number(document.getElementById("minutes").value)*60;
+endAt=Date.now()+remaining*1000;
+document.getElementById("timerMessage").textContent="Focus time. You've got this!";
+interval=setInterval(tick,250);
+};
+document.getElementById("pause").onclick=()=>{
+if(interval!==null){tick();stop();document.getElementById("timerMessage").textContent="Paused. Continue when ready.";}
+};
+document.getElementById("reset").onclick=()=>{
+stop();remaining=Number(document.getElementById("minutes").value)*60;
+displayTime();document.getElementById("timerMessage").textContent="Timer reset. Ready when you are!";
+};
+displayTime();
+</script>
+</body>
+</html>
